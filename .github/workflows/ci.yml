@@ -184,12 +184,12 @@ jobs:
           # Linker warnings as errors
           LDFLAGS: -Wl,--fatal-warnings
       - run: cmake --build build
-      - run: cmake --install build --prefix /tmp
+      - run: cmake --install build --prefix build/install
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:
           path: |
-            tmp
+            build/install
  
   # apple-cross-compile:
   #   name: iOS
