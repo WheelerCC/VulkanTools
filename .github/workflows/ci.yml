@@ -157,6 +157,7 @@ jobs:
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:
+          name: linux-24-arm
           path: |
             build/install
 
@@ -188,6 +189,7 @@ jobs:
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
         with:
+          name: linux-22-arm
           path: |
             build/install
  
