@@ -154,6 +154,11 @@ jobs:
           -G "Ninja"
       - run: cmake --build build
       - run: cmake --install build --prefix build/install
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: |
+            build/install
 
   linux-22-arm:
     runs-on: ubuntu-22.04-arm
@@ -180,6 +185,11 @@ jobs:
           LDFLAGS: -Wl,--fatal-warnings
       - run: cmake --build build
       - run: cmake --install build --prefix /tmp
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: |
+            tmp
  
   # apple-cross-compile:
   #   name: iOS
