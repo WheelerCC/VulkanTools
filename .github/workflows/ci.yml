@@ -157,13 +157,15 @@ jobs:
   linux-22-arm:
     runs-on: ubuntu-22.04-arm
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
-    steps:
+    steps:      
       - uses: actions/checkout@v4
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
           version: '6.8.2'
       - uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: 3.22.1
       - name: Configure
         run: |
           cmake -S . -B build/ \
