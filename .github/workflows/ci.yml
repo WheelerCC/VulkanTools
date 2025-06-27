@@ -158,25 +158,28 @@ jobs:
   linux-22-arm:
     runs-on: ubuntu-22.04-arm
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
-    steps:      
+    steps:
       - uses: actions/checkout@v4
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.8.2'
-      - uses: lukka/get-cmake@latest
+          version: '6.2.*'
+      - name: Test Minimum CMake Version
+        uses: lukka/get-cmake@latest
         with:
           cmakeVersion: 3.22.1
+      - uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: linux_back_compat
       - run: sudo apt-get -qq update && sudo apt-get install -y libwayland-dev xorg-dev
-      - name: Configure
-        run: |
-          cmake -S . -B build/ \
-          -D CMAKE_BUILD_TYPE=Debug \
-          -D UPDATE_DEPS=ON \
-          -D BUILD_WERROR=ON \
-          -G "Ninja"
+      - run: cmake -S . -B build/ -D UPDATE_DEPS=ON -D CMAKE_BUILD_TYPE=Debug
+        env:
+          CMAKE_C_COMPILER_LAUNCHER: ccache
+          CMAKE_CXX_COMPILER_LAUNCHER: ccache
+          # Linker warnings as errors
+          LDFLAGS: -Wl,--fatal-warnings
       - run: cmake --build build
-      - run: cmake --install build --prefix build/install
+      - run: cmake --install build --prefix /tmp
  
   # apple-cross-compile:
   #   name: iOS
